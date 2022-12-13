@@ -1,0 +1,45 @@
+
+
+spring:
+  rabbitmq:
+    addresses: amqps://gvhdbkkf:JUNfSx-9_nlq03-CXTN0Rw2GyIp_trlQ@moose.rmq.cloudamqp.com/gvhdbkkf
+    listener:
+      simple:
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          max-attempts: "3"    # Máximo 3 tentativas
+          initial-interval: 5s # esperar 5 segundos pra reprocessar
+          multiplier: "2"      # vai esperar 5s, dps em 10, dps em 20s
+
+  application:
+    name: ead-authuser-service
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/controle-service
+    username: postgres
+    password: changeme
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc:
+        lob.non-contextual-creation: true
+    properties:
+      hibernate:
+        show_sql: true
+  output:
+    ansi:
+      enabled: Always
+
+
+server:
+  port: 8082
+
+
+rabbit:
+  broker:
+    exchange:
+      userEvent: userevent
+    queue:
+      user:
+        name: userevent.queue
