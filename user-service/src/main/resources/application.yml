@@ -30,4 +30,9 @@ rabbit:
     exchange:
       userEvent: userevent
 
+ead:
+  auth:
+    jwtSecret: +MbQeThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u8x/A?D(G+KbPdSgVkYp3s6v9y$B&
+    jwtExpiration: 14400000
+
 

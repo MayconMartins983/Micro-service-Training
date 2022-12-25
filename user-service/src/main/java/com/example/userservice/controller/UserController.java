@@ -20,11 +20,6 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping
-    public UserResponse createUser(@Validated @RequestBody UserRequest request) {
-        return service.createUser(request);
-    }
-
     @GetMapping("id/{id}")
     public UserResponse findById(@PathVariable UUID id) {
         return service.findById(id);

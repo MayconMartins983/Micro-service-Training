@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,11 +44,15 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public UserResponse createUser(UserRequest request) {
         validatedObject(request);
         emailAlreadyExists(request.getEmail());
         var userModel = userMapper.toUser(request);
+        userModel.setPassword(passwordEncoder.encode(request.getPassword()));
         var modelSaved = repository.save(userModel);
         var userRabbit = userMapper.toUserRabbitFromModel(modelSaved);
 
@@ -61,7 +66,7 @@ public class UserService {
     }
 
     public UserResponse findByEmail(String email) {
-        var user = Optional.ofNullable(repository.findByEmail(email))
+        var user = repository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFound("User not found with email: " + email));
         return userMapper.toUserResponse(user);
     }
