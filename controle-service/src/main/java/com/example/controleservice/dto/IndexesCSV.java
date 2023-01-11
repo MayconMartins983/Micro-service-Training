@@ -26,4 +26,5 @@ public class IndexesCSV {
     private Integer statusAlunoIndex;
     private Integer roundingIndex;
     private Integer teacherConsiderationsIndex;
+    private Integer cpfIndex;
 }

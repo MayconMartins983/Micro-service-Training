@@ -27,8 +27,8 @@ public class StudentService {
         userRepository.save(userModel);
     }
 
-    public Student findStudentById(UUID id) {
-        return userRepository.findById(id)
+    public Student findStudentByCpf(String cpf) {
+        return userRepository.findByCpf(cpf)
                 .orElseThrow(() -> new RuntimeException("This User Not Found"));
     }
 

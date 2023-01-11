@@ -31,6 +31,8 @@ public class User {
     @Email
     private String email;
     @NotBlank
+    private String cpf;
+    @NotBlank
     private String password;
     @Embedded
     private Endereco endereco;

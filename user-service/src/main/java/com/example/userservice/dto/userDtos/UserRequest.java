@@ -32,4 +32,6 @@ public class UserRequest {
     private Endereco endereco;
     @NotNull
     private List<RolesModel> roles;
+    @NotBlank
+    private String cpf;
 }

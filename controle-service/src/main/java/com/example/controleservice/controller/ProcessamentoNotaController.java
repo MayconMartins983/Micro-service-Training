@@ -21,10 +21,9 @@ public class ProcessamentoNotaController {
     @Autowired
     private ProcessNoteService service;
 
-    @PostMapping("csv/idStudent/{idStudent}")
+    @PostMapping("csv")
     public ResponseEntity<List<ProcessNoteResponse>> processNotesFromCsv(MultipartFile file,
-                                                                         @RequestParam String delimiter,
-                                                                         @PathVariable UUID idStudent) {
-        return ResponseEntity.ok().body(service.processNotesFromCsv(file, delimiter, idStudent));
+                                                                         @RequestParam String delimiter) {
+        return ResponseEntity.ok().body(service.processNotesFromCsv(file, delimiter));
     }
 }

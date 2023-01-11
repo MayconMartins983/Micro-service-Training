@@ -26,6 +26,8 @@ public class Student {
     private String lastName;
     @NotBlank
     private String phone;
+    @NotBlank
+    private String cpf;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProcessamentoNota> processamentoNotaList;

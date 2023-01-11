@@ -11,5 +11,6 @@ public class UserDtoRabbit {
     private String name;
     private String lastName;
     private String phone;
+    private String cpf;
     private ActionType actionType;
 }

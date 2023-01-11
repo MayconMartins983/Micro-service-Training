@@ -14,11 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.example.controleservice.utils.CvsUtils.validatedExtensionFile;
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.TRUE;
 
 @Service
 public class ProcessNoteService {
@@ -31,8 +30,10 @@ public class ProcessNoteService {
     @Autowired
     private StudentService studentService;
 
+    //ele busca o usuario do csv pelo cpf, e busca a media das notas e seu respectivo status
+
     @Transactional
-    public List<ProcessNoteResponse> processNotesFromCsv(MultipartFile file, String delimiter, UUID idStudent) {
+    public List<ProcessNoteResponse> processNotesFromCsv(MultipartFile file, String delimiter) {
         validatedExtensionFile(file);
         var linesCsv = CvsUtils.readCsv(file);
         var indexesFieldsHeader = searchIndexByHeader(linesCsv.get(0), delimiter);
@@ -42,15 +43,15 @@ public class ProcessNoteService {
                 .map(e -> e.split(delimiter))
                 .collect(Collectors.toList());
 
-        return processNotes(listOfArray, indexesFieldsHeader, idStudent);
+        return processNotes(listOfArray, indexesFieldsHeader);
     }
 
-    private List<ProcessNoteResponse> processNotes(List<String[]> listDataFromCsv, IndexesCSV indexesHeader, UUID idStudent) {
-        var studentById = studentService.findStudentById(idStudent);
+    private List<ProcessNoteResponse> processNotes(List<String[]> listDataFromCsv, IndexesCSV indexesHeader) {
 
         return listDataFromCsv
                 .stream()
                 .map(student -> {
+                    var studentByCpf = studentService.findStudentByCpf(student[indexesHeader.getCpfIndex()]);
                     var processNoteModel = ProcessamentoNota.builder()
                             .nameCourse(student[indexesHeader.getNameCourseIndex()])
                             .semester(ESemestre.valueOf(student[indexesHeader.getSemesterIndex()].toUpperCase()))
@@ -64,7 +65,7 @@ public class ProcessNoteService {
                             .noteProof3(Double.valueOf(student[indexesHeader.getNoteProof3Index()]))
                             .noteExam(Double.valueOf(student[indexesHeader.getNoteExamIndex()]))
                             .teacherConsiderations(student[indexesHeader.getTeacherConsiderationsIndex()])
-                            .student(studentById)
+                            .student(studentByCpf)
                             .build();
 
                     var averageNotes = processNoteModel.getSumNotes() / 8;
@@ -131,6 +132,7 @@ public class ProcessNoteService {
                 .noteProof3Index(Arrays.asList(fieldsHeader).indexOf("NoteProof3"))
                 .noteExamIndex(Arrays.asList(fieldsHeader).indexOf("NoteExam"))
                 .teacherConsiderationsIndex(Arrays.asList(fieldsHeader).indexOf("TeacherConsiderations"))
+                .cpfIndex(Arrays.asList(fieldsHeader).indexOf("cpf"))
                 .build();
     }
 }
