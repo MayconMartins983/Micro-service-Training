@@ -1,10 +1,8 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.userDtos;
 
 import com.example.userservice.enums.ActionType;
-import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Data

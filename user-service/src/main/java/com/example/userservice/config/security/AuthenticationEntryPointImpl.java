@@ -14,6 +14,7 @@ import java.io.IOException;
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
+    //Este método trata o retorno de uma requisição não autorizada e mostra um log no console
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         log.error("Unauthorized error: {}", e.getMessage());

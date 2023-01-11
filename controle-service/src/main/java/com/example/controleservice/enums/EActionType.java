@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ActionType {
+public enum EActionType {
     CREATE("CREATE"),
     UPDATE("UPDATE"),
     DELETE("DELETE");

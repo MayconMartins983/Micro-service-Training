@@ -1,4 +1,4 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.userDtos;
 
 import com.example.userservice.model.Endereco;
 import com.example.userservice.model.RolesModel;

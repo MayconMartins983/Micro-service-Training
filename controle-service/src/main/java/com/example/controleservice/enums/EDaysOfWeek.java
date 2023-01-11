@@ -1,10 +1,9 @@
 package com.example.controleservice.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public enum DaysOfWeek {
+public enum EDaysOfWeek {
     SEGUNDA,
     TERCA,
     QUARTA,

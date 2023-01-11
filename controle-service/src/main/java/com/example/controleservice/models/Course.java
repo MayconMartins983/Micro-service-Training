@@ -1,6 +1,6 @@
 package com.example.controleservice.models;
 
-import com.example.controleservice.enums.DaysOfWeek;
+import com.example.controleservice.enums.EDaysOfWeek;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +32,7 @@ public class Course {
     @NotNull
     private Integer workload;
     @NotBlank
-    private DaysOfWeek daysOfWeek;
+    private EDaysOfWeek daysOfWeek;
     private String numberRoom;
     private LocalDateTime lastChange;
 //    @OneToMany

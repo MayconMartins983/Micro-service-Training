@@ -1,9 +1,9 @@
 package com.example.controleservice.rabbitMq;
 
 import com.example.controleservice.dto.UserDtoRabbit;
-import com.example.controleservice.enums.ActionType;
-import com.example.controleservice.models.User;
-import com.example.controleservice.service.UserService;
+import com.example.controleservice.enums.EActionType;
+import com.example.controleservice.models.Student;
+import com.example.controleservice.service.StudentService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -24,7 +24,7 @@ public class UserConsummer {
     public static final String USER_DELETED_IN_DATA_BASE = "User %s deleted with sucessfull!! ";
 
     @Autowired
-    private UserService userService;
+    private StudentService studentService;
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "${rabbit.broker.queue.user.name}", durable = "true"),
@@ -33,20 +33,20 @@ public class UserConsummer {
     public void listenUserEvent(@Payload UserDtoRabbit userDtoRabbit) {
         var fullNameUser = userDtoRabbit.getName().concat(" ").concat(userDtoRabbit.getLastName());
         log.info("User received");
-        var userModel = new User();
+        var userModel = new Student();
         BeanUtils.copyProperties(userDtoRabbit, userModel);
 
-        switch (ActionType.valueOf(userDtoRabbit.getActionType().getDescription())) {
+        switch (EActionType.valueOf(userDtoRabbit.getEActionType().getDescription())) {
             case CREATE:
-                userService.saveUser(userModel);
+                studentService.saveStudent(userModel);
                 log.info(String.format(USER_SAVED_IN_DATA_BASE, fullNameUser));
                 break;
             case UPDATE:
-                userService.updateUser(userModel);
+                studentService.updateStudent(userModel);
                 log.info(String.format(USER_UPDATED_IN_DATA_BASE, fullNameUser));
                 break;
             case DELETE:
-                userService.deleteUser(userModel);
+                studentService.deleteStudent(userModel);
                 log.info(String.format(USER_DELETED_IN_DATA_BASE, fullNameUser));
                 break;
         }

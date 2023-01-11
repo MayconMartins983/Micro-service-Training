@@ -1,6 +1,6 @@
 package com.example.controleservice.dto;
 
-import com.example.controleservice.enums.ActionType;
+import com.example.controleservice.enums.EActionType;
 import lombok.Data;
 
 import java.util.UUID;
@@ -11,5 +11,5 @@ public class UserDtoRabbit {
     private String name;
     private String lastName;
     private String phone;
-    private ActionType actionType;
+    private EActionType EActionType;
 }

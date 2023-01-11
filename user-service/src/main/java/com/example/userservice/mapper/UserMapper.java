@@ -1,16 +1,12 @@
 package com.example.userservice.mapper;
 
-import com.example.userservice.dto.UserDtoRabbit;
-import com.example.userservice.dto.UserRequest;
-import com.example.userservice.dto.UserResponse;
-import com.example.userservice.enums.ActionType;
+import com.example.userservice.dto.userDtos.UserDtoRabbit;
+import com.example.userservice.dto.userDtos.UserRequest;
+import com.example.userservice.dto.userDtos.UserResponse;
 import com.example.userservice.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {

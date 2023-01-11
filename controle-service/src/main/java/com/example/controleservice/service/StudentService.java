@@ -1,32 +1,39 @@
 package com.example.controleservice.service;
 
 import com.example.controleservice.exceptions.NotFoundException;
-import com.example.controleservice.models.User;
+import com.example.controleservice.models.Student;
 import com.example.controleservice.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
-public class UserService {
+public class StudentService {
 
     @Autowired
     private UserRepository userRepository;
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public void saveStudent(Student student) {
+        userRepository.save(student);
     }
 
-    public void updateUser(User user) {
-        var userModel = userRepository.findById(user.getId())
+    public void updateStudent(Student student) {
+        var userModel = userRepository.findById(student.getId())
                 .orElseThrow(() -> new NotFoundException("user NotFound"));
 
-        BeanUtils.copyProperties(user, userModel);
+        BeanUtils.copyProperties(student, userModel);
         userRepository.save(userModel);
     }
 
-    public void deleteUser(User user) {
-        var userModel = userRepository.findById(user.getId())
+    public Student findStudentById(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("This User Not Found"));
+    }
+
+    public void deleteStudent(Student student) {
+        var userModel = userRepository.findById(student.getId())
                 .orElseThrow(() -> new NotFoundException("user NotFound"));
         userRepository.deleteById(userModel.getId());
     }

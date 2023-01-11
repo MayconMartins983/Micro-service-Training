@@ -1,7 +1,7 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.UserRequest;
-import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.userDtos.UserRequest;
+import com.example.userservice.dto.userDtos.UserResponse;
 import com.example.userservice.enums.Role;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

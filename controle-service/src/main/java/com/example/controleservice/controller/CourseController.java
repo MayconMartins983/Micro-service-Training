@@ -2,7 +2,6 @@ package com.example.controleservice.controller;
 
 import com.example.controleservice.dto.CourseRequest;
 import com.example.controleservice.dto.CourseResponse;
-import com.example.controleservice.models.Course;
 import com.example.controleservice.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

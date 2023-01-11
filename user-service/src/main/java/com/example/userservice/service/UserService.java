@@ -1,9 +1,7 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.UserDtoRabbit;
-import com.example.userservice.dto.UserRequest;
-import com.example.userservice.dto.UserResponse;
-import com.example.userservice.enums.ActionType;
+import com.example.userservice.dto.userDtos.UserRequest;
+import com.example.userservice.dto.userDtos.UserResponse;
 import com.example.userservice.enums.Role;
 import com.example.userservice.exceptions.ResourceNotFound;
 import com.example.userservice.exceptions.ValidationExceptionCustom;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
