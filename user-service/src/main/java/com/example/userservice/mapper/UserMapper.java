@@ -1,11 +1,13 @@
 package com.example.userservice.mapper;
 
+import com.example.userservice.dto.authDtos.UserAuthenticated;
 import com.example.userservice.dto.userDtos.UserDtoRabbit;
 import com.example.userservice.dto.userDtos.UserRequest;
 import com.example.userservice.dto.userDtos.UserResponse;
 import com.example.userservice.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component

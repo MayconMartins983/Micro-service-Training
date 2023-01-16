@@ -10,20 +10,20 @@ import com.example.userservice.model.RolesModel;
 import com.example.userservice.model.User;
 import com.example.userservice.rabbitMq.UserPublisherRabbitMq;
 import com.example.userservice.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.ValidationException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.example.userservice.enums.ActionType.*;
+import static com.example.userservice.enums.ActionType.DELETE;
+import static com.example.userservice.enums.ActionType.UPDATE;
 
 
 @Service
@@ -42,20 +42,7 @@ public class UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Transactional
-    public UserResponse createUser(UserRequest request) {
-        validatedObject(request);
-        emailAlreadyExists(request.getEmail());
-        var userModel = userMapper.toUser(request);
-        userModel.setPassword(passwordEncoder.encode(request.getPassword()));
-        var modelSaved = repository.save(userModel);
-        var userRabbit = userMapper.toUserRabbitFromModel(modelSaved);
-
-        userPublisherRabbitMq.publisherUser(userRabbit, CREATE);
-        return userMapper.toUserResponse(modelSaved);
-    }
+    private AuthenticationService authenticationService;
 
     public Page<UserResponse> listAllUsers(Pageable pageable) {
         return repository.findAll(pageable)
@@ -92,9 +79,19 @@ public class UserService {
         return userMapper.toUserResponse(userModel);
     }
 
+    @SneakyThrows
     public UserResponse findById(UUID id) {
+        var currentUser = authenticationService.getUserAuthenticated();
+
+//        if (currentUser.getUserId().equals(id)) {
+//            var user = findUserOrThrowException(id);
+//            return userMapper.toUserResponse(user);
+//        } else {throw new AccessDeniedException("Forbidden");
+//        }
+
         var user = findUserOrThrowException(id);
         return userMapper.toUserResponse(user);
+
     }
 
     public void deleteUser(UUID id) {
@@ -118,12 +115,6 @@ public class UserService {
     private void emailAlreadyExists(String email) {
         if (repository.existsByEmail(email)) {
             throw new ValidationExceptionCustom(EMAIL_IS_ALREADY_IN_USE);
-        }
-    }
-
-    private void validatedObject(Object object) {
-        if (object == null) {
-            throw new ValidationException(THE_OBJECT_CANNOT_BE_EMPTY);
         }
     }
 }

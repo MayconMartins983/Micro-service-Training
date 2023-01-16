@@ -6,6 +6,7 @@ import com.example.controleservice.exceptions.ExceptionValidation;
 import com.example.controleservice.exceptions.NotFoundException;
 import com.example.controleservice.mapper.CourseMapper;
 import com.example.controleservice.models.Course;
+import com.example.controleservice.models.Student;
 import com.example.controleservice.repository.CourseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

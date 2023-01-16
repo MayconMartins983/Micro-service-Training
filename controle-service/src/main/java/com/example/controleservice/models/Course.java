@@ -4,14 +4,13 @@ import com.example.controleservice.enums.EDaysOfWeek;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -35,7 +34,6 @@ public class Course {
     private EDaysOfWeek daysOfWeek;
     private String numberRoom;
     private LocalDateTime lastChange;
-//    @OneToMany
-//    @JoinColumn(name = "id")
-//    private List<User> students;
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Student> students;
 }

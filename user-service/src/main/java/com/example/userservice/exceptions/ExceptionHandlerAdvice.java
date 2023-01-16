@@ -39,4 +39,18 @@ public class ExceptionHandlerAdvice {
 
         return new ErroMessage(date, erroDescription);
     }
+
+//    @ExceptionHandler(value = AccessDeniedException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    @ResponseBody
+//    public Object handleAcessDeniedException(AccessDeniedException ex) {
+//        var date = ConfigDate.formatLocalDateTime(LocalDateTime.now());
+//        var erroDescription = ex.getLocalizedMessage();
+//
+//        if (erroDescription.isBlank()) {
+//            erroDescription = ex.toString();
+//        }
+//
+//        return new ErroMessage(date, erroDescription);
+//    }
 }

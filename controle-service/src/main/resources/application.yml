@@ -1,4 +1,6 @@
-
+ead:
+  auth:
+    jwtSecret: +MbQeThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u8x/A?D(G+KbPdSgVkYp3s6v9y$B&
 
 spring:
   rabbitmq:

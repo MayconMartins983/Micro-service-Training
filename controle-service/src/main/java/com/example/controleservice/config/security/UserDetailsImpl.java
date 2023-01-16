@@ -1,13 +1,13 @@
-package com.example.userservice.config.security;
+package com.example.controleservice.config.security;
 
-import com.example.userservice.model.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.controleservice.models.Student;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -18,43 +18,29 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private UUID userId;
-    private String username;
-    private String lastName;
-    private String phone;
-    @JsonIgnore
-    private String password;
-    private String email;
-    private String cpf;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailsImpl buildUserDetails(User userModel) {
-        List<GrantedAuthority> authorities = userModel.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+    public static UserDetailsImpl buildUserDetails(UUID userId, String roles) {
+        List<GrantedAuthority> authorities = Arrays.stream(roles.split(","))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         return new UserDetailsImpl(
-                userModel.getId(),
-                userModel.getName(),
-                userModel.getLastName(),
-                userModel.getPhone(),
-                userModel.getPassword(),
-                userModel.getEmail(),
-                userModel.getCpf(),
+                userId,
                 authorities);
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
-    @Override
     public String getPassword() {
-        return this.password;
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return null;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
     @Override

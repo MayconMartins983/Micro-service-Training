@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,11 @@ public class Student {
     private String phone;
     @NotBlank
     private String cpf;
+    @ManyToOne
+    private Course course;
+
+
+
 
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProcessamentoNota> processamentoNotaList;
