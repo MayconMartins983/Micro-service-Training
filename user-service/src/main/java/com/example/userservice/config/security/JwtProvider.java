@@ -1,6 +1,5 @@
 package com.example.userservice.config.security;
 
-import com.example.userservice.exceptions.ValidationExceptionCustom;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +51,6 @@ public class JwtProvider {
             log.error("invalidJWT token: {}", ex.getMessage());
         } catch (ExpiredJwtException ex) {
             log.error("JWT token is expired: {}", ex.getMessage());
-            //throw new ValidationExceptionCustom("Token expired");
         } catch (UnsupportedJwtException ex) {
             log.error("JWT token is unsupported: {}", ex.getMessage());
         } catch (IllegalArgumentException ex) {
