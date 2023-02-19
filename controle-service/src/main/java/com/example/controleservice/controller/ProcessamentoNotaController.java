@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,8 +30,7 @@ public class ProcessamentoNotaController {
     }
 
     @GetMapping("download-csv")
-    public ResponseEntity<InputStreamResource> downloadCSV() throws IOException {
-        return ResponseEntity.ok()
-                .body(service.downloadCSV());
+    public void downloadCSV(HttpServletResponse response) throws IOException {
+        service.downloadCSV2(response);
     }
 }

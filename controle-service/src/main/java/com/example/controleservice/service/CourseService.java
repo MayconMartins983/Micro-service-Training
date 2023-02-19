@@ -61,6 +61,10 @@ public class CourseService {
         repository.deleteById(lista.getId());
     }
 
+    public Course getAllStudentsFromCourse(UUID courseId) {
+        return findCourseByIdOrthrowException(courseId);
+    }
+
     public CourseResponse updateCourse(UUID idCourse, CourseRequest request) {
         var courseModel = findCourseByIdOrthrowException(idCourse);
         if (request.getName().equals(courseModel.getName())) {

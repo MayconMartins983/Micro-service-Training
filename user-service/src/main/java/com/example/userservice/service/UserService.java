@@ -18,12 +18,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.AccessDeniedException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.example.userservice.enums.ActionType.DELETE;
-import static com.example.userservice.enums.ActionType.UPDATE;
 
 
 @Service
@@ -31,7 +31,6 @@ public class UserService {
 
     public static final String RESOURCE_NOT_FOUND = ("User not exists!");
     public static final String EMAIL_IS_ALREADY_IN_USE = "Email is already in use!";
-    public static final String THE_OBJECT_CANNOT_BE_EMPTY = "The object cannot be empty!";
     @Autowired
     private UserRepository repository;
 
@@ -73,8 +72,6 @@ public class UserService {
         BeanUtils.copyProperties(request, userModel);
         repository.save(userModel);
 
-        var userRabbit = userMapper.toUserRabbitFromModel(userModel);
-        userPublisherRabbitMq.publisherUser(userRabbit, UPDATE);
 
         return userMapper.toUserResponse(userModel);
     }
@@ -83,15 +80,12 @@ public class UserService {
     public UserResponse findById(UUID id) {
         var currentUser = authenticationService.getUserAuthenticated();
 
-//        if (currentUser.getUserId().equals(id)) {
-//            var user = findUserOrThrowException(id);
-//            return userMapper.toUserResponse(user);
-//        } else {throw new AccessDeniedException("Forbidden");
-//        }
-
-        var user = findUserOrThrowException(id);
-        return userMapper.toUserResponse(user);
-
+        if (currentUser.getUserId().equals(id)) {
+            var user = findUserOrThrowException(id);
+            return userMapper.toUserResponse(user);
+        } else {
+            throw new AccessDeniedException("Forbidden");
+        }
     }
 
     public void deleteUser(UUID id) {
@@ -103,8 +97,8 @@ public class UserService {
         userPublisherRabbitMq.publisherUser(userRabbit, DELETE);
     }
 
-    public User saveUserWithoutValidation(User user) {
-        return repository.save(user);
+    public void saveUserWithoutValidation(User user) {
+        repository.save(user);
     }
 
     public User findUserOrThrowException(UUID id) {

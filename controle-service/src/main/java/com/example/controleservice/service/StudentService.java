@@ -38,4 +38,6 @@ public class StudentService {
                 .orElseThrow(() -> new NotFoundException("user NotFound"));
         userRepository.deleteById(userModel.getId());
     }
+
+    public List<Student> getAllStudentsByCourse()
 }

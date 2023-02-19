@@ -34,6 +34,6 @@ public class Course {
     private EDaysOfWeek daysOfWeek;
     private String numberRoom;
     private LocalDateTime lastChange;
-    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<Student> students;
 }

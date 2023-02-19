@@ -9,18 +9,16 @@ import com.example.controleservice.models.ProcessamentoNota;
 import com.example.controleservice.models.Student;
 import com.example.controleservice.repository.ProcessamentoNotaRepository;
 import com.example.controleservice.utils.CvsUtils;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -73,30 +71,28 @@ public class ProcessNoteService {
         return resource;
     }
 
-    public String getProcessNoteStudentsByCourse(UUID idCourse) {
-        var course = courseService.findById(idCourse);
-        var studentsFromCourse = course.getStudents();
-        var teste = List.of(Student.builder()
-                .name("maycon")
-                .lastName("martins")
-                .build(),
-                Student.builder()
-                        .name("pedro")
-                        .lastName("martins")
-                        .build(),
-                Student.builder()
-                        .name("Luis")
-                        .lastName("martins")
-                        .build());
-        var linesFromStudent = teste.stream()
-                .map(student -> {
-                    var process = repository.findByCpfUser(student.getCpf());
-                    return student.getFullName().concat(";").concat("process.getStatusAluno().toString()")
-                            .concat(";").concat(String.valueOf(8.7)).concat("\n");
-                }).collect(Collectors.toList());
-        var singleLine = String.join("", linesFromStudent);
+    public void downloadCSV2(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        var headerKey = "Content-Disposition";
+        var headerValue = "attachment; filename=note_student" + ".csv";
 
-        return HEADER_FROM_CSV.concat(singleLine);
+        response.setHeader(headerKey, headerValue);
+
+        FileWriter fileWriter = new FileWriter(new File("file"), StandardCharsets.UTF_8);
+        try (BufferedWriter bw = new BufferedWriter(fileWriter)) {
+            bw.write(getProcessNoteStudentsByCourse(UUID.fromString("e141d0c2-4438-4f5b-a184-e7de40816e89")));
+        } catch (IOException ex) {
+            throw new ExceptionValidation("failed to write to csv");
+        }
+
+    }
+
+    public String getProcessNoteStudentsByCourse(UUID idCourse) {
+        var course = courseService.getAllStudentsFromCourse(idCourse);
+
+        var processNotes = repository.findProcessByStudent(studentsIds);
+
+        return HEADER_FROM_CSV;
     }
 
     private List<ProcessNoteResponse> processNotes(List<String[]> listDataFromCsv, IndexesCSV indexesHeader) {

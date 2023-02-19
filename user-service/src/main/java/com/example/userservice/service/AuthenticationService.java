@@ -46,7 +46,7 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
     public JwtDto authenticateUser(LoginDto loginDto) {
-        //metodo abaixo faz a autenticação do usuario, verifcia email e senha
+        //metodo abaixo faz a autenticação do usuario, verifica email e senha
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
